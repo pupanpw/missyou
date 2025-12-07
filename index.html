@@ -86,7 +86,7 @@
         transition: left 0.2s ease, top 0.2s ease;
       }
 
-      /* Floating hearts */
+    
       .heart {
         position: fixed;
         bottom: -10px;
@@ -104,6 +104,29 @@
         100% {
           transform: translateY(-120vh) scale(1.8);
           opacity: 0;
+        }
+      }
+
+      /* Waiting emoji 🥺 */
+      #waiting-emoji {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        font-size: 60px;
+        opacity: 0.7;
+        animation: blink 1.2s infinite ease-in-out;
+        pointer-events: none;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 0.25;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
         }
       }
     </style>
@@ -127,6 +150,10 @@
       </div>
     </div>
 
+
+    <div id="waiting-emoji">🥺</div>
+
+  
     <audio id="bgm" src="assets/renew.mp3"></audio>
 
     <script>
@@ -135,6 +162,7 @@
       const yesBtn = document.getElementById("yes-btn");
       const noBtn = document.getElementById("no-btn");
       const bgm = document.getElementById("bgm");
+      const waitingEmoji = document.getElementById("waiting-emoji");
 
       function moveButton() {
         const padding = 20;
@@ -155,6 +183,8 @@
 
         yesBtn.style.display = "none";
         noBtn.style.display = "none";
+
+        waitingEmoji.style.display = "none";
 
         bgm.volume = 0.8;
         bgm.play();
