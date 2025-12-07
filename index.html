@@ -86,7 +86,6 @@
         transition: left 0.2s ease, top 0.2s ease;
       }
 
-    
       .heart {
         position: fixed;
         bottom: -10px;
@@ -107,26 +106,22 @@
         }
       }
 
-      /* Waiting emoji 🥺 */
-      #waiting-emoji {
+      .sad {
         position: fixed;
-        bottom: 40px;
-        right: 40px;
-        font-size: 60px;
-        opacity: 0.7;
-        animation: blink 1.2s infinite ease-in-out;
-        pointer-events: none;
+        bottom: -20px;
+        font-size: 45px;
+        animation: floatUpSlow 6s linear infinite;
+        opacity: 0.9;
       }
 
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 0.25;
-          transform: scale(1);
-        }
-        50% {
+      @keyframes floatUpSlow {
+        0% {
+          transform: translateY(0) scale(1);
           opacity: 1;
-          transform: scale(1.15);
+        }
+        100% {
+          transform: translateY(-120vh) scale(1.2);
+          opacity: 0;
         }
       }
     </style>
@@ -150,10 +145,6 @@
       </div>
     </div>
 
-
-    <div id="waiting-emoji">🥺</div>
-
-  
     <audio id="bgm" src="assets/renew.mp3"></audio>
 
     <script>
@@ -162,7 +153,6 @@
       const yesBtn = document.getElementById("yes-btn");
       const noBtn = document.getElementById("no-btn");
       const bgm = document.getElementById("bgm");
-      const waitingEmoji = document.getElementById("waiting-emoji");
 
       function moveButton() {
         const padding = 20;
@@ -176,15 +166,28 @@
       noBtn.addEventListener("mouseover", moveButton);
       noBtn.addEventListener("touchstart", moveButton);
 
+      function spawnSad() {
+        const sad = document.createElement("div");
+        sad.classList.add("sad");
+        sad.innerHTML = "🥺";
+        sad.style.left = Math.random() * 100 + "vw";
+
+        document.body.appendChild(sad);
+
+        setTimeout(() => sad.remove(), 6000);
+      }
+
+      let sadInterval = setInterval(spawnSad, 900);
+
       yesBtn.addEventListener("click", () => {
+        clearInterval(sadInterval);
+
         question.innerHTML = "เค้าก็คิดถึงเหมือนกันน้าาา ❤️🥰";
         mainImage.src =
           "https://media3.giphy.com/media/42YlR8u9gV5Cw/giphy.gif";
 
         yesBtn.style.display = "none";
         noBtn.style.display = "none";
-
-        waitingEmoji.style.display = "none";
 
         bgm.volume = 0.8;
         bgm.play();
