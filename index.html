@@ -15,7 +15,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: #ffe6e9;
+        background: linear-gradient(135deg, #ffd6e8, #ffecef);
         font-family: "Quicksand", sans-serif;
         margin: 0;
         overflow: hidden;
@@ -23,6 +23,18 @@
 
       .container {
         text-align: center;
+        animation: fadeIn 1s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       h1 {
@@ -63,7 +75,7 @@
       }
 
       #yes-btn:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
       }
 
       #no-btn {
@@ -73,14 +85,36 @@
         position: fixed;
         transition: left 0.2s ease, top 0.2s ease;
       }
+
+      /* Floating hearts */
+      .heart {
+        position: fixed;
+        bottom: -10px;
+        font-size: 20px;
+        animation: floatUp 4s linear infinite;
+        color: #ff4d6d;
+        opacity: 0.8;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-120vh) scale(1.8);
+          opacity: 0;
+        }
+      }
     </style>
   </head>
+
   <body>
     <div class="container">
       <div class="gif-container">
         <img
           id="main-image"
-          src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHdra2s2MWp4NW16YnB1a2RhZWNybTU1N3JyYmR5aTJzeTNqODVpayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlQb83MmQ6hUgSs/giphy.gif"
+          src="https://media1.giphy.com/media/l0HlQb83MmQ6hUgSs/giphy.gif"
           alt="Cute Bear"
         />
       </div>
@@ -93,11 +127,14 @@
       </div>
     </div>
 
+    <audio id="bgm" src="assets/renew.mp3"></audio>
+
     <script>
       const question = document.getElementById("question");
       const mainImage = document.getElementById("main-image");
       const yesBtn = document.getElementById("yes-btn");
       const noBtn = document.getElementById("no-btn");
+      const bgm = document.getElementById("bgm");
 
       function moveButton() {
         const padding = 20;
@@ -114,11 +151,29 @@
       yesBtn.addEventListener("click", () => {
         question.innerHTML = "เค้าก็คิดถึงเหมือนกันน้าาา ❤️🥰";
         mainImage.src =
-          "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3M2eTgxMTNtNDFpY2E4Zm14aHhvZGU4bnJ5aGR2bWE5MnA2NDdvZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/42YlR8u9gV5Cw/giphy.gif";
+          "https://media3.giphy.com/media/42YlR8u9gV5Cw/giphy.gif";
 
         yesBtn.style.display = "none";
         noBtn.style.display = "none";
+
+        bgm.volume = 0.8;
+        bgm.play();
+
+        spawnHearts();
+        setInterval(spawnHearts, 500);
       });
+
+      function spawnHearts() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "💗";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 4000);
+      }
     </script>
   </body>
 </html>
